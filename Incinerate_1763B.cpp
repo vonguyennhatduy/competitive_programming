@@ -3,7 +3,11 @@
 using namespace std;
 const int maxn = 1e5 + 5;
 
-int n,k,h[maxn],p[maxn];
+int n,k;
+
+bool cmp (pair <int,int> a,pair <int,int> b) {
+    return a.second < b.second;
+}
 
 int32_t main () {
     ios_base::sync_with_stdio(0);
@@ -12,32 +16,32 @@ int32_t main () {
     int test;
     cin >> test;
     while(test--) {
-
+ 
         cin >> n >> k;
-        for(int i = 1; i <= n; i++)
-            cin >> h[i];
-        for(int i = 1; i <= n; i++) 
-            cin >> p[i];
-
-        
-        vector <pair <int,int> > tmp;
-        int sum = 0;
-        for(int i = 1; i <= n; i++) {
-            sum += h[i];
-            tmp.push_back({h[i],p[i]});
+        pair <int,int> a[n];
+        for(int i = 0; i < n; i++){
+            int x; cin >> x;
+            a[i].first = x;
+        }
+        for(int i = 0; i < n; i++){
+            int x; cin >> x;
+            a[i].second = x;
         }
 
-        sort(tmp.begin(),tmp.end());
-        
-        
+        sort(a, a + n, cmp);
+
+        int ans = 0,idx = 0;
+        while(idx < n && k > 0) {
+            ans += k;
+            while(a[idx].first <= ans && idx < n)  {
+                idx++;
+            }
+            k -= a[idx].second;
+            if(k <= 0) break;
+        } 
+
+        cout << (idx == n ? "YES\n" : "NO\n");
         
     }
 }
-
-/* 
-
-*/
-
-
-
 
