@@ -3,43 +3,71 @@
 using namespace std;
 const int maxn = 1e5 + 5;
 
-int n,k,a[maxn];
+int n,m,k,a[maxn],l[maxn],r[maxn],d[maxn],tmp[maxn],ans[maxn];
 
 int32_t main () {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
 
     int test;
-    cin >> test;
+    test = 1;
     while(test--) {
  
-       cin >> n >> k;
-       for(int i = 1; i <= k; i++){
-        cin >> a[i];
-       } 
+        cin >> n >> m >> k;
+        for(int i = 1; i <= n; i++) {
+            cin >> a[i];
+        }
 
-       if(k == 1){
-        cout << "YES\n";
-        continue;
-       }
+        for(int i = 1; i <= m; i++){
+            cin >> l[i] >> r[i] >> d[i];
+        }
 
-       vector <int> tmp;
-       for(int i = 2; i <= k; i++) {
-        tmp.push_back(a[i] - a[i - 1]);
-       }
+        while(k--) {
+            int left,right;
+            cin >> left >> right;
+            tmp[left]++;
+            tmp[right + 1]--;
+        }
 
-       if(!is_sorted(tmp.begin(),tmp.end())) {
-        cout << "NO\n";
-        continue;
-       }
+        for(int i = 1; i <= m; i++) {
+            tmp[i] += tmp[i - 1];
+        }
 
-       if(a[1] > (a[2] - a[1]) * (n - k + 1)){
-        cout << "NO\n";
-        continue;
-       }
+        for(int i = 1; i <= m; i++) {
+            ans[l[i]] += (d[i] * tmp[i]);
+            ans[r[i] + 1] -= (d[i] * tmp[i]);
+        }
 
-       cout << "YES\n";
+        for(int i = 1; i <= n; i++) 
+            ans[i] += ans[i - 1];
+
+        for(int i = 1; i <= n; i++)
+            cout << a[i] + ans[i] << " ";
 
     }
 }
+
+/*
+3 3 3
+1 2 3
+1 2 1
+1 3 2
+2 3 4
+1 2
+1 3
+2 3
+
+1 2 3
+
+3 4 3
+9 10 9 
+9 18 17
+
+
+3 3 0 
+4 3 0
+7 6 0 
+8 7 0 
+
+*/
 
