@@ -3,15 +3,15 @@
 using namespace std;
 const int maxn = 1e5 + 5;
 
-int n,d,k,a[maxn],tmp[maxn],f[maxn];
+int n,d,k,l[maxn],r[maxn];
+pair <int,int> a[maxn];
+
 
 void reset () {
-    for(int i = 1; i <= maxn; i++){
-        tmp[i] = 0;
-        f[i] = 0;
+    for(int i = 1; i <= n; i++) {
+        l[i] = r[i] = 0;
     }
 }
-
 
 int32_t main () {
     ios_base::sync_with_stdio(0);
@@ -22,44 +22,42 @@ int32_t main () {
     while(test--) {
  
         cin >> n >> d >> k;
-        while(k--){
-            int l,r;
-            cin >> l >> r;
-            tmp[l]++;
-            tmp[r + 1]--;
-        }
-        
-        for(int i = 1; i <= n; i++)
-            tmp[i] += tmp[i - 1];
-        
-        f[1] = tmp[1];
-        for(int i = 2; i <= n; i++) {
-            f[i] = f[i - 1] + (tmp[i - 1] - tmp[i]);
+        for(int i = 1; i <= k; i++) {
+            cin >> a[i].first >> a[i].second;
+            l[a[i].first]++;
+            r[a[i].second]++;
         }
 
+        int sum = 0;
+        for(int i = 1; i <= d; i++) {
+            sum += l[i];
+        }
 
-        int ans = -1e18,idx1 = -1;
-        for(int i = 1; i <= n - d + 1; i++) {
-            if(ans < tmp[i] + abs(f[i + d - 1] - f[i])){
-                ans = tmp[i] + abs(f[i + d - 1] - f[i]);
-                idx1 = i;
+        // sliding window 
+        int ans = sum,res = sum,idxBro = 1,idxMo = 1;
+        for(int i = d + 1; i <= n; i++) {
+            sum += l[i];
+            sum -= r[i - d];
+            if(sum > ans) {
+                ans = sum;
+                idxBro = i - d + 1;
             }
-        }
 
-        int res = 1e18,idx2 = -1;
-        for(int i = 1; i <= n - d + 1; i++) {
-            if(res > tmp[i] + abs(f[i + d - 1] - f[i])) {
-                res =  tmp[i] + abs(f[i + d - 1] - f[i]);
-                idx2 = i;
+            if(sum < res) {
+                res = sum;
+                idxMo = i - d + 1;
             }
+
         }
 
-        cout << idx1 << " " << idx2 << endl;
-
+        cout << idxBro << " " << idxMo << endl;
+        
         reset();
         
     }
 }
 /*
+
+
 
 */
