@@ -36,8 +36,10 @@ int32_t main () {
         // sliding window 
         int ans = sum,res = sum,idxBro = 1,idxMo = 1;
         for(int i = d + 1; i <= n; i++) {
+
             sum += l[i];
             sum -= r[i - d];
+
             if(sum > ans) {
                 ans = sum;
                 idxBro = i - d + 1;
@@ -53,7 +55,7 @@ int32_t main () {
         cout << idxBro << " " << idxMo << endl;
         
         reset();
-        
+
     }
 }
 /*
